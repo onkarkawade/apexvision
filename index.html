@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axon Vision | Computer Vision & Synthetic Data Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #2d1b69 0%, #5b2a86 100%);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        nav .logo span {
+            color: #00d9ff;
+            font-weight: 300;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #00d9ff;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2d1b69 0%, #5b2a86 100%);
+            color: white;
+            padding: 150px 2rem 100px;
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s;
+            letter-spacing: 2px;
+        }
+
+        .hero .tagline {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #00d9ff;
+            animation: fadeInUp 1s 0.2s backwards;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s 0.4s backwards;
+            line-height: 1.8;
+        }
+
+        .hero .tech-keywords {
+            font-size: 1rem;
+            color: #00d9ff;
+            margin-top: 2rem;
+            animation: fadeInUp 1s 0.6s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #00d9ff;
+            color: #2d1b69;
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s 0.8s backwards;
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 80px 2rem;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #2d1b69;
+        }
+
+        section .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 25px rgba(45, 27, 105, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(45, 27, 105, 0.2);
+            border-color: #00d9ff;
+        }
+
+        .solution-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #5b2a86;
+        }
+
+        .solution-card h3 {
+            color: #2d1b69;
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+        }
+
+        .solution-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .video-placeholder {
+            background: linear-gradient(135deg, #5b2a86 0%, #2d1b69 100%);
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder::before {
+            content: "▶";
+            font-size: 3rem;
+            opacity: 0.8;
+        }
+
+        .tech-stack {
+            background: #f8f4ff;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid #00d9ff;
+        }
+
+        .tech-stack h4 {
+            color: #2d1b69;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tech-stack p {
+            color: #5b2a86;
+            font-size: 0.95rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .benefits {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .benefits li {
+            padding: 0.6rem 0;
+            color: #555;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .benefits li::before {
+            content: "✓";
+            color: #00d9ff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .about {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+            line-height: 1.9;
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .expertise-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(45, 27, 105, 0.1);
+            text-align: center;
+        }
+
+        .expertise-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .expertise-card h3 {
+            color: #2d1b69;
+            margin-bottom: 0.5rem;
+        }
+
+        .expertise-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #2d1b69 0%, #5b2a86 100%);
+            color: white;
+        }
+
+        .contact h2 {
+            color: white;
+        }
+
+        .contact .subtitle {
+            color: #e0e0e0;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: #2d1b69;
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #5b2a86;
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+        }
+
+        .contact-info a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-size: 1.1rem;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeInUp 0.5s;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.3rem;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">AXON <span>VISION</span></div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#expertise">Expertise</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>AXON VISION</h1>
+            <p class="tagline">Advanced Computer Vision & Synthetic Data Solutions</p>
+            <p>Transforming industries through cutting-edge computer vision technology. We specialize in synthetic data generation, object detection, and image enhancement for enterprises, startups, and research institutions.</p>
+            <p class="tech-keywords">YOLO • Faster R-CNN • RT-DETR • Synthetic Data • Image Enhancement</p>
+            <a href="#contact" class="cta-button">Start Your Project</a>
+        </div>
+    </section>
+
+    <section id="solutions">
+        <div class="container">
+            <h2>Our Solutions</h2>
+            <p class="subtitle">State-of-the-art computer vision solutions powered by the latest deep learning architectures</p>
+            
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="icon">🎨</div>
+                    <h3>Synthetic Data Generation</h3>
+                    <div class="video-placeholder">
+                        Demo Video Coming Soon
+                    </div>
+                    <p>Generate high-quality synthetic training data for computer vision models. Reduce data collection costs and accelerate model development with procedurally generated, labeled datasets.</p>
+                    <div class="tech-stack">
+                        <h4>Technology Stack</h4>
+                        <p>Blender • Unity • Unreal Engine • GANs • Procedural Generation</p>
+                    </div>
+                    <ul class="benefits">
+                        <li>90% reduction in data collection costs</li>
+                        <li>Unlimited labeled training samples</li>
+                        <li>Custom domain adaptation</li>
+                        <li>Perfect ground truth annotations</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <div class="icon">🎯</div>
+                    <h3>Object Detection Systems</h3>
+                    <div class="video-placeholder">
+                        Demo Video Coming Soon
+                    </div>
+                    <p>Deploy production-ready object detection models using YOLO, Faster R-CNN, and RT-DETR. Optimized for real-time performance on edge devices and cloud infrastructure.</p>
+                    <div class="tech-stack">
+                        <h4>Technology Stack</h4>
+                        <p>YOLOv8 • YOLOv9 • Faster R-CNN • RT-DETR • PyTorch • TensorFlow</p>
+                    </div>
+                    <ul class="benefits">
+                        <li>Real-time detection (60+ FPS)</li>
+                        <li>Custom model training & fine-tuning</li>
+                        <li>Multi-class object recognition</li>
+                        <li>Edge deployment optimization</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <div class="icon">✨</div>
+                    <h3>Image Enhancement & Processing</h3>
+                    <div class="video-placeholder">
+                        Demo Video Coming Soon
+                    </div>
+                    <p>Advanced image enhancement using deep learning. Denoise, super-resolve, and restore images for medical imaging, security, and quality control applications.</p>
+                    <div class="tech-stack">
+                        <h4>Technology Stack</h4>
+                        <p>CNNs • GANs • Diffusion Models • OpenCV • CUDA</p>
+                    </div>
+                    <ul class="benefits">
+                        <li>4x-8x resolution upscaling</li>
+                        <li>Noise reduction & restoration</li>
+                        <li>Low-light enhancement</li>
+                        <li>Batch processing pipelines</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <div class="icon">🔬</div>
+                    <h3>Custom Model Development</h3>
+                    <div class="video-placeholder">
+                        Your Solution Here
+                    </div>
+                    <p>End-to-end computer vision model development tailored to your specific use case. From dataset creation to deployment, we handle the entire ML pipeline.</p>
+                    <div class="tech-stack">
+                        <h4>Technology Stack</h4>
+                        <p>PyTorch • TensorFlow • ONNX • TensorRT • Docker • Kubernetes</p>
+                    </div>
+                    <ul class="benefits">
+                        <li>Domain-specific model architecture</li>
+                        <li>Full MLOps pipeline setup</li>
+                        <li>Model optimization & quantization</li>
+                        <li>Continuous training & monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise" class="about">
+        <div class="container">
+            <h2>Our Expertise</h2>
+            <p class="subtitle">Deep technical knowledge across the computer vision landscape</p>
+            <div class="about-content">
+                <p>At Axon Vision, we combine cutting-edge research with practical engineering to deliver production-ready computer vision solutions. Our team specializes in the latest deep learning architectures and has experience deploying models across diverse industries including automotive, manufacturing, healthcare, and robotics.</p>
+                <p>We understand that every problem is unique. Whether you need real-time object detection for autonomous systems, synthetic data for rare edge cases, or image enhancement for quality control, we architect solutions that balance accuracy, speed, and cost.</p>
+            </div>
+
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <div class="icon">🚗</div>
+                    <h3>Automotive & Robotics</h3>
+                    <p>Autonomous navigation, SLAM, object tracking</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="icon">🏭</div>
+                    <h3>Manufacturing</h3>
+                    <p>Defect detection, quality control, process automation</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="icon">🏥</div>
+                    <h3>Healthcare</h3>
+                    <p>Medical imaging, diagnostic assistance, pathology</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="icon">🔒</div>
+                    <h3>Security & Surveillance</h3>
+                    <p>Anomaly detection, facial recognition, behavior analysis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Let's Build Something</h2>
+            <p class="subtitle">Ready to solve your computer vision challenges? Get in touch.</p>
+            
+            <div class="contact-form">
+                <div id="successMessage" class="success-message">
+                    ✓ Thank you! Your message has been sent. We'll get back to you soon.
+                </div>
+
+                <form action="https://formsubmit.co/onkarkawade@gmail.com" method="POST" id="contactForm">
+                    <input type="hidden" name="_subject" value="New inquiry from Axon Vision website">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company / Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Tell us about your project *</label>
+                        <textarea id="message" name="message" required placeholder="Describe your computer vision challenge..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:onkarkawade@gmail.com">onkarkawade@gmail.com</a></p>
+                <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/onkar-kawade" target="_blank">Connect with us</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Axon Vision. All rights reserved.</p>
+            <p>Advanced Computer Vision & Synthetic Data Solutions</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
